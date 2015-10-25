@@ -19,7 +19,7 @@
         "iso_checksum_type": "sha256",
 
         "boot_command": [
-            "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/fedora-22-server/anaconda-ks.cfg<enter><wait>"
+            "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{user `atlas_name`}}/anaconda-ks.cfg<enter><wait>"
         ],
         "boot_wait": "10s",
 
@@ -40,7 +40,7 @@
     }],
     "post-processors": [
       [{
-        "output": "build/fedora-22-server.box",
+        "output": "build/{{user `atlas_name`}}.box",
         "type": "vagrant"
       },
       {
