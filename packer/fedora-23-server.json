@@ -42,6 +42,15 @@
       [{
         "output": "build/{{user `atlas_name`}}.box",
         "type": "vagrant"
+      },
+      {
+        "type": "atlas",
+        "only": ["virtualbox-iso"],
+        "artifact": "{{user `atlas_username`}}/{{user `atlas_name`}}",
+        "artifact_type": "vagrant.box",
+        "metadata": {
+            "provider": "virtualbox"
+        }
       }]
     ],
     "provisioners": [
