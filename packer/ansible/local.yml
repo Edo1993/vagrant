@@ -1,0 +1,5 @@
+---
+- hosts: localhost
+  tasks:
+  - name: install vagrant unsecure key
+    authorized_key: user=vagrant key=https://github.com/mitchellh/vagrant/raw/master/keys/vagrant.pub

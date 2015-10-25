@@ -1,0 +1,63 @@
+{
+    "variables": {
+        "ssh_name": "vagrant",
+        "ssh_pass": "vagrant"
+    },
+    "builders": [{
+        "type": "virtualbox-iso",
+        "virtualbox_version_file": ".vbox_version",
+        "headless": false,
+
+        "guest_os_type": "Fedora_64",
+        "disk_size": 15000,
+        "hard_drive_interface": "sata",
+
+        "iso_url": "https://download.fedoraproject.org/pub/fedora/linux/releases/22/Server/x86_64/iso/Fedora-Server-netinst-x86_64-22.iso",
+        "iso_checksum": "9f1f2f19f75cc3b97da41878b5c86188fa8d27ed446bd97d9df615c137c77cfc",
+        "iso_checksum_type": "sha256",
+
+        "boot_command": [
+            "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/fedora-22-server/anaconda-ks.cfg<enter><wait>"
+        ],
+        "boot_wait": "10s",
+
+        "http_directory": "http",
+        "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
+
+        "ssh_username": "{{user `ssh_name`}}",
+        "ssh_password": "{{user `ssh_pass`}}",
+        "ssh_port": 22,
+        "ssh_wait_timeout": "3600s",
+
+        "vboxmanage": [
+            ["modifyvm", "{{.Name}}", "--memory", "1024"],
+            ["modifyvm", "{{.Name}}", "--cpus", "2"]
+        ],
+
+        "shutdown_command": "echo '{{user `ssh_name`}}' | sudo -S /sbin/halt -h -p"
+    }],
+    "post-processors": [{
+        "output": "build/fedora-22-server.box",
+        "type": "vagrant"
+    }],
+    "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "script": "scripts/dnf/vbguest.sh"
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "script": "scripts/dnf/ansible.sh"
+    },
+    {
+      "type": "ansible-local",
+      "playbook_file": "ansible/local.yml"
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "script": "scripts/dnf/cleanup.sh"
+    }]
+}
