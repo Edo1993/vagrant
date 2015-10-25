@@ -1,7 +1,9 @@
 {
     "variables": {
         "ssh_name": "vagrant",
-        "ssh_pass": "vagrant"
+        "ssh_pass": "vagrant",
+        "atlas_username": "{{env `ATLAS_USERNAME`}}",
+        "atlas_name": "fedora-22-server"
     },
     "builders": [{
         "type": "virtualbox-iso",
@@ -39,6 +41,16 @@
     "post-processors": [{
         "output": "build/fedora-22-server.box",
         "type": "vagrant"
+    },
+    {
+            "type": "atlas",
+            "only": ["virtualbox-iso"],
+            "artifact": "{{user `atlas_username`}}/{{user `atlas_name`}}",
+            "artifact_type": "vagrant.box",
+            "metadata": {
+                "provider": "virtualbox",
+                "version": "0.0.1"
+            }
     }],
     "provisioners": [
     {
