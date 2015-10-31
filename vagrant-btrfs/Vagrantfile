@@ -14,7 +14,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box = "akanto/fedora-23-server"
+  config.vm.box = "akanto/fedora-22-server"
+
+  # does not work with dnf
+  #if Vagrant.has_plugin?("vagrant-cachier")
+  #    config.cache.scope = :box
+  #end
 
   config.vm.provision "shell", path: "bootstrap_btrfs.sh"
 
@@ -23,8 +28,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     vb.customize ["modifyvm", :id, "--cpus", "2"]
 
     (1..4).each do |i|
-       vb.customize ["createhd",  "--filename", "storage_disk#{i}", "--size", "4096"]
-       vb.customize ["storageattach", :id, "--storagectl", "SATA Controller", "--port", "#{i}", "--type", "hdd", "--medium", "storage_disk#{i}.vdi"]
+       storage_disk = "storage_disk#{i}.vdi"
+       unless File.exist?(storage_disk)
+          vb.customize ["createhd",  "--filename", storage_disk, "--size", "4096"]
+       end
+       vb.customize ["storageattach", :id, "--storagectl", "SATA Controller", "--port", "#{i}", "--type", "hdd", "--medium", storage_disk]
     end
 
   end

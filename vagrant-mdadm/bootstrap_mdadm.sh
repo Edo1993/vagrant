@@ -4,7 +4,7 @@
 
 
 install_mdadm() {
-     yum -y install mdadm
+     dnf -y install mdadm
 }
 
 configure_raid5() {
