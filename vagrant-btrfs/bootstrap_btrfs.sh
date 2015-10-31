@@ -5,13 +5,16 @@ install_btrfs() {
 }
 
 create_btrfs() {
-  mkfs.btrfs -L data -m raid1 -d raid5 /dev/sd[b-e]
+  mkfs.btrfs -L data -m raid5 -d raid5 /dev/sd[b-e]
   mkdir -p /mnt/data
+  bash -c "echo /dev/disk/by-label/data /mnt/data btrfs  rw,user,exec 0 0 >> /etc/fstab"
   mount /dev/disk/by-label/data /mnt/data
 }
 
 info_btrfs() {
-  btrfs fi show
+  btrfs filesystem show
+  btrfs device usage /mnt/data
+  btrfs device stats /mnt/data
 }
 
 main() {
