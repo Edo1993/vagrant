@@ -16,6 +16,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # boxes at https://atlas.hashicorp.com/search.
   config.vm.box = "akanto/fedora-22-server"
 
+  config.vm.network "private_network", ip: "10.0.90.10"
+
   # does not work with dnf
   #if Vagrant.has_plugin?("vagrant-cachier")
   #    config.cache.scope = :box

@@ -1,4 +1,4 @@
-## btrfs test environment in Vagrant
+## Btrfs test environment in Vagrant
 
 To launch a VM with 4 attached disks and create a raid5 btrfs on top of them:
 
