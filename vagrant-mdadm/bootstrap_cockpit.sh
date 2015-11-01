@@ -2,17 +2,17 @@
 
 install_cockpit() {
      dnf -y install cockpit
+     systemctl enable cockpit.socket
      systemctl start cockpit
 }
 
-disable_firewalld() {
-     systemctl stop firewalld
-     systemctl disable firewalld
+enable_cockpit_firewalld() {
+     firewall-cmd --add-service=cockpit
 }
 
 main() {
   install_cockpit
-  disable_firewalld
+  enable_cockpit_firewalld
 }
 
 [[ "$0" == "$BASH_SOURCE" ]] && main "$@"
