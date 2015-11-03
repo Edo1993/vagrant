@@ -14,8 +14,8 @@
         "disk_size": 15000,
         "hard_drive_interface": "sata",
 
-        "iso_url": "https://download.fedoraproject.org/pub/fedora/linux/releases/test/23_Beta/Server/x86_64/iso/Fedora-Server-netinst-x86_64-23_Beta.iso",
-        "iso_checksum": "8c9d0139e1297b3577833d766718df66c1002650e5971f089775395c74a9cfab",
+        "iso_url": "https://download.fedoraproject.org/pub/fedora/linux/releases/23/Server/x86_64/iso/Fedora-Server-netinst-x86_64-23.iso",
+        "iso_checksum": "32e0a15a1c71d0e2fd36a0af5b67a3b3af82976d2dfca0aefcb90d42f2ae6844",
         "iso_checksum_type": "sha256",
 
         "boot_command": [
