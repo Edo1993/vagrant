@@ -14,7 +14,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box = "akanto/fedora-22-server"
+  config.vm.box = "akanto/fedora-23-server"
 
   config.vm.network "private_network", ip: "10.0.90.10"
 
