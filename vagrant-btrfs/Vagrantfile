@@ -29,7 +29,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     vb.customize ["modifyvm", :id, "--memory", "4096"]
     vb.customize ["modifyvm", :id, "--cpus", "2"]
 
-    (1..4).each do |i|
+    (1..5).each do |i|
        storage_disk = "storage_disk#{i}.vdi"
        unless File.exist?(storage_disk)
           vb.customize ["createhd",  "--filename", storage_disk, "--size", "4096"]

@@ -17,6 +17,16 @@ info_btrfs() {
   btrfs device stats /mnt/data
 }
 
+replace_faulty() {
+  btrfs replace start -f /dev/sde /dev/sdf /mnt/data
+  btrfs replace status /mnt/data
+}
+
+scrub_btrfs() {
+  btrfs scrub start -B -d /mnt/data
+}
+
+
 main() {
   install_btrfs
   create_btrfs
