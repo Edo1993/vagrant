@@ -16,27 +16,28 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # boxes at https://atlas.hashicorp.com/search.
   config.vm.box = "akanto/fedora-23-server"
 
-  config.vm.network "private_network", ip: "10.0.90.10"
+#  config.vm.box = "boxcutter/centos71"
 
+#  if Vagrant.has_plugin?("vagrant-cachier")
+#      config.cache.scope = :box
+  #end
+
+  (0..3).each do |i|
+    config.vm.define "node#{i}" do |node|
+      node.vm.hostname = "node#{i}"
+      node.vm.network "private_network", ip: "10.0.0.1#{i}"
+      node.vm.provider :virtualbox do |vb|
+          vb.customize ["modifyvm", :id, "--memory", "1024"]
+          vb.customize ["modifyvm", :id, "--cpus", "1"]
+      end
+      node.vm.provision "shell", path: "bootstrap_docker.sh"
+    end
+  end
   # does not work with dnf
   #if Vagrant.has_plugin?("vagrant-cachier")
   #    config.cache.scope = :box
   #end
 
-  config.vm.provision "shell", path: "bootstrap_btrfs.sh"
 
-  config.vm.provider :virtualbox do |vb|
-    vb.customize ["modifyvm", :id, "--memory", "4096"]
-    vb.customize ["modifyvm", :id, "--cpus", "2"]
-
-    (1..4).each do |i|
-       storage_disk = "storage_disk#{i}.vdi"
-       unless File.exist?(storage_disk)
-          vb.customize ["createhd",  "--filename", storage_disk, "--size", "4096"]
-       end
-       vb.customize ["storageattach", :id, "--storagectl", "SATA Controller", "--port", "#{i}", "--type", "hdd", "--medium", storage_disk]
-    end
-
-  end
 
 end
