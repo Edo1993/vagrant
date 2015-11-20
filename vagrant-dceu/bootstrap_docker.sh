@@ -1,5 +1,10 @@
 #!/bin/bash
 
+generic_tools() {
+  dnf -y install wget curl
+}
+
+
 permissive_iptables() {
   # need to install iptables-services, othervise the 'iptables save' command will not be available
   dnf -y install iptables-services net-tools
@@ -32,6 +37,7 @@ EOF
 
 
 main() {
+  generic_tools
   permissive_iptables
   disable_selinux
   install_docker
