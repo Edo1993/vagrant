@@ -7,8 +7,15 @@ VAGRANTFILE_API_VERSION = "2"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.box = "ubuntu/trusty64"
-  config.vm.network "public_network", bridge: "en0: Wi-Fi (AirPort)"
+  #config.vm.network "public_network", bridge: "en0: Wi-Fi (AirPort)"
+  config.vm.network "public_network", bridge: "en5: Display Ethernet"
   config.vm.provision "shell", inline: "route del default && route add default gw 192.168.1.1 eth1"
+
+  config.vm.provider :virtualbox do |vb|
+   vb.customize ["modifyvm", :id, "--nicpromisc2", "allow-all"]
+   vb.customize ["modifyvm", :id, "--memory", "1024"]
+   vb.customize ["modifyvm", :id, "--cpus", "1"]
+ end
   #config.vm.provision "shell", inline: "route add -net 216.0.0.0 netmask 255.0.0.0  dev eth1"
 
   config.vm.define "ovsvm" do |ovsvm|
