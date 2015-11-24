@@ -1,0 +1,9 @@
+---
+- name: Install openvswitch
+  apt: name={{ item }} state=latest
+  sudo: true
+  with_items:
+    - openvswitch-switch
+    - bridge-utils
+    - traceroute
+    - tcpdump

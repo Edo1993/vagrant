@@ -1,0 +1,15 @@
+---
+- name: Run the equivalent of "apt-get update" as a separate step
+  apt: update_cache=yes
+  sudo: true
+
+- name: install basic utilities
+  apt: name={{ item }} state=latest
+  sudo: true
+  with_items:
+    - ntp
+    - sysstat
+    - tree
+    - traceroute
+    - software-properties-common
+    - iperf
