@@ -1,7 +1,9 @@
 #!/bin/bash
 
 generic_tools() {
-  dnf -y install wget curl
+  dnf -y install wget curl golang git openvswitch
+  systemctl start openvswitch
+  systemctl enable openvswitch
 }
 
 
