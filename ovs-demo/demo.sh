@@ -41,3 +41,28 @@ ip netns exec ns1 dhclient tap1
 ip netns exec ns1 ifconfig
 
 ovs-vsctl show
+
+#NS2
+
+ip netns add ns2
+#### PORT 1 https://github.com/dave-tucker/container-connection-comparison/blob/master/ovs-veth.sh
+# create a port pair
+ip link add tap2 type veth peer name ovs-tap2
+# attach one side to ovs
+ovs-vsctl add-port br0 ovs-tap2
+
+# To show the links
+# ip link list
+# attach the other side to namespace
+ip link set tap1 netns ns2
+# Chek again, and inspect that teh tap1 disappeared
+# ip link list
+
+# set the ports to up
+ip netns exec ns1 ip link set dev lo up
+ip netns exec ns1 ip link set dev tap1 up
+ip link set dev ovs-tap1 up
+
+ip netns exec ns2 bash
+ifconfig tap2 192.168.1.205 netmask 255.255.255.0
+route add default gw 192.168.1.1 tap2
