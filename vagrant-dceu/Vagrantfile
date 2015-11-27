@@ -25,10 +25,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   (0..3).each do |i|
     config.vm.define "node#{i}" do |node|
       node.vm.hostname = "node#{i}"
-      node.vm.network "private_network", ip: "10.0.0.1#{i}"
+      node.vm.network "private_network", ip: "10.0.40.1#{i}"
       # Configure networking for advanced topics
       node.vm.network "public_network", bridge: "en3: Thunderbolt Ethernet"
-      node.vm.provision "shell", inline: "route del default && route add default gw 192.168.1.1 enp0s9"
+      #node.vm.network "public_network", bridge: "en0: Wi-Fi (AirPort)"
+      #node.vm.network "public_network", bridge: "en5: Display Ethernet"
+      #node.vm.provision "shell", inline: "route del default && route add default gw 192.168.1.1 enp0s9"
+      node.vm.synced_folder "../../../go", "/opt/go"
       node.vm.provider :virtualbox do |vb|
           vb.customize ["modifyvm", :id, "--nicpromisc3", "allow-all"]
           vb.customize ["modifyvm", :id, "--memory", "1024"]

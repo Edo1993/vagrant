@@ -21,17 +21,16 @@ disable_selinux() {
   sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
 }
 
-#Shall be updated to fc23 once it is available
 install_docker() {
   cat >/etc/yum.repos.d/docker.repo <<-EOF
 [dockerrepo]
 name=Docker Repository
-baseurl=https://yum.dockerproject.org/repo/main/fedora/22
+baseurl=https://yum.dockerproject.org/repo/main/fedora/23
 enabled=1
 gpgcheck=1
 gpgkey=https://yum.dockerproject.org/gpg
 EOF
-  dnf install -y docker-engine-1.9.0-1.fc22
+  dnf install -y docker-engine
   systemctl start docker
   systemctl enable docker
   usermod -aG docker vagrant
