@@ -1,0 +1,76 @@
+{
+    "variables": {
+        "ssh_name": "vagrant",
+        "ssh_pass": "vagrant",
+        "atlas_username": "{{env `ATLAS_USERNAME`}}",
+        "atlas_name": "centos-7"
+    },
+    "builders": [{
+        "type": "virtualbox-iso",
+        "virtualbox_version_file": ".vbox_version",
+        "headless": false,
+
+        "guest_os_type": "RedHat_64",
+        "disk_size": 15000,
+        "hard_drive_interface": "sata",
+
+        "iso_url": "http://buildlogs.centos.org/rolling/7/isos/x86_64/CentOS-7-x86_64-Minimal-1510-01.iso",
+        "iso_checksum": "4f13894cb3fee041e92231b58ae9334af17ed7f03a919d4abb0caad01870dafb",
+        "iso_checksum_type": "sha256",
+
+        "boot_command": [
+            "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{user `atlas_name`}}/anaconda-ks.cfg<enter><wait>"
+        ],
+        "boot_wait": "10s",
+
+        "http_directory": "http",
+        "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
+
+        "ssh_username": "{{user `ssh_name`}}",
+        "ssh_password": "{{user `ssh_pass`}}",
+        "ssh_port": 22,
+        "ssh_wait_timeout": "3600s",
+
+        "vboxmanage": [
+            ["modifyvm", "{{.Name}}", "--memory", "1024"],
+            ["modifyvm", "{{.Name}}", "--cpus", "2"]
+        ],
+
+        "shutdown_command": "echo '{{user `ssh_name`}}' | sudo -S /sbin/halt -h -p"
+    }],
+    "post-processors": [
+      [{
+        "output": "build/{{user `atlas_name`}}.box",
+        "type": "vagrant"
+      },
+      {
+        "type": "atlas",
+        "only": ["virtualbox-iso"],
+        "artifact": "{{user `atlas_username`}}/{{user `atlas_name`}}",
+        "artifact_type": "vagrant.box",
+        "metadata": {
+            "provider": "virtualbox"
+        }
+      }]
+    ],
+    "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "script": "scripts/yum/vbguest.sh"
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "script": "scripts/yum/ansible.sh"
+    },
+    {
+      "type": "ansible-local",
+      "playbook_file": "ansible/local.yml"
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "script": "scripts/yum/cleanup.sh"
+    }]
+}
