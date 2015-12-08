@@ -8,7 +8,7 @@ create_btrfs() {
   mkfs.btrfs -L data -m raid5 -d raid5 /dev/sd[b-e]
   mkdir -p /mnt/data
   bash -c "echo /dev/disk/by-label/data /mnt/data btrfs  rw,user,exec 0 0 >> /etc/fstab"
-  mount /dev/disk/by-label/data /mnt/data
+  mount /mnt/data
 }
 
 info_btrfs() {
