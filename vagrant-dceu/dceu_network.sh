@@ -16,13 +16,13 @@ start_kv_etcd() {
 }
 
 docker_conf_consul() {
-  sudo sed -i 's/^ExecStart=.*/ExecStart=\/usr\/bin\/docker daemon -H fd:\/\/ -H tcp:\/\/0.0.0.0:2376 --selinux-enabled=false --cluster-store=consul:\/\/10.0.40.10:8500\/network --cluster-advertise=enp0s8:2375/' /usr/lib/systemd/system/docker.service
+  sudo sed -i 's/^ExecStart=.*/ExecStart=\/usr\/bin\/docker daemon -H fd:\/\/ -H tcp:\/\/0.0.0.0:2376 --selinux-enabled=false --cluster-store=consul:\/\/10.0.40.10:8500\/network --cluster-advertise=enp0s8:2376/' /usr/lib/systemd/system/docker.service
   sudo systemctl daemon-reload
   sudo systemctl restart docker
 }
 
 docker_conf_etcd() {
-  sudo sed -i 's/^ExecStart=.*/ExecStart=\/usr\/bin\/docker daemon -H fd:\/\/ -H tcp:\/\/0.0.0.0:2376 --selinux-enabled=false --cluster-store=etcd:\/\/10.0.40.10:4001 --cluster-advertise=enp0s8:2375/' /usr/lib/systemd/system/docker.service
+  sudo sed -i 's/^ExecStart=.*/ExecStart=\/usr\/bin\/docker daemon -H fd:\/\/ -H tcp:\/\/0.0.0.0:2376 --selinux-enabled=false --cluster-store=etcd:\/\/10.0.40.10:4001 --cluster-advertise=enp0s8:2376/' /usr/lib/systemd/system/docker.service
   sudo systemctl daemon-reload
   sudo systemctl restart docker
 }
