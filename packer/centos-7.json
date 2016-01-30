@@ -11,11 +11,10 @@
         "headless": false,
 
         "guest_os_type": "RedHat_64",
-        "disk_size": 15000,
         "hard_drive_interface": "sata",
 
-        "iso_url": "http://buildlogs.centos.org/rolling/7/isos/x86_64/CentOS-7-x86_64-Minimal-1510-01.iso",
-        "iso_checksum": "4f13894cb3fee041e92231b58ae9334af17ed7f03a919d4abb0caad01870dafb",
+        "iso_url": "http://buildlogs.centos.org/rolling/7/isos/x86_64/CentOS-7-x86_64-Minimal-1511.iso",
+        "iso_checksum": "f90e4d28fa377669b2db16cbcb451fcb9a89d2460e3645993e30e137ac37d284",
         "iso_checksum_type": "sha256",
 
         "boot_command": [
