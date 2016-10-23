@@ -3,18 +3,19 @@
         "ssh_name": "vagrant",
         "ssh_pass": "vagrant",
         "atlas_username": "{{env `ATLAS_USERNAME`}}",
-        "atlas_name": "centos-7"
+        "atlas_name": "fedora-24-server"
     },
     "builders": [{
         "type": "virtualbox-iso",
         "virtualbox_version_file": ".vbox_version",
         "headless": false,
 
-        "guest_os_type": "RedHat_64",
+        "guest_os_type": "Fedora_64",
+        "disk_size": 15000,
         "hard_drive_interface": "sata",
 
-        "iso_url": "http://buildlogs.centos.org/rolling/7/isos/x86_64/CentOS-7-x86_64-Minimal-1609-01.iso",
-        "iso_checksum": "54721e5e444a3191b18b0fabe1c35e12b65f93aa31732beb7899212d19cab69b",
+        "iso_url": "http://fedora.inode.at/releases/24/Server/x86_64/iso/Fedora-Server-netinst-x86_64-24-1.2.iso",
+        "iso_checksum": "071c30520775b3e93bb4c34edab4eab3badc26fbb8473ad3a9458614ba85a4e5",
         "iso_checksum_type": "sha256",
 
         "boot_command": [
@@ -56,12 +57,12 @@
     {
       "type": "shell",
       "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
-      "script": "scripts/yum/vbguest.sh"
+      "script": "scripts/dnf/vbguest.sh"
     },
     {
       "type": "shell",
       "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
-      "script": "scripts/yum/ansible.sh"
+      "script": "scripts/dnf/ansible.sh"
     },
     {
       "type": "ansible-local",
@@ -70,6 +71,6 @@
     {
       "type": "shell",
       "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
-      "script": "scripts/yum/cleanup.sh"
+      "script": "scripts/dnf/cleanup.sh"
     }]
 }
