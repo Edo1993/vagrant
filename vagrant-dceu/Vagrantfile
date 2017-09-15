@@ -22,13 +22,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 #      config.cache.scope = :box
   #end
 
-  (0..3).each do |i|
+  (0..1).each do |i|
     config.vm.define "node#{i}" do |node|
       node.vm.hostname = "node#{i}"
       node.vm.network "private_network", ip: "10.0.40.1#{i}"
       # Configure networking for advanced topics
       # node.vm.network "public_network", bridge: "en3: Thunderbolt Ethernet"
-      #node.vm.network "public_network", bridge: "en0: Wi-Fi (AirPort)"
+      node.vm.network "public_network", bridge: "en0: Wi-Fi (AirPort)"
       #node.vm.network "public_network", bridge: "en5: Display Ethernet"
       #node.vm.provision "shell", inline: "route del default && route add default gw 192.168.1.1 enp0s9"
       node.vm.synced_folder "../../../go", "/opt/go"
@@ -37,7 +37,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           vb.customize ["modifyvm", :id, "--memory", "1024"]
           vb.customize ["modifyvm", :id, "--cpus", "1"]
       end
-      node.vm.provision "shell", path: "bootstrap_docker.sh"
+      #node.vm.provision "shell", path: "bootstrap_docker.sh"
     end
   end
   # does not work with dnf
