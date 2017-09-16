@@ -1,0 +1,42 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  # The most common configuration options are documented and commented below.
+  # For a complete reference, please see the online documentation at
+  # https://docs.vagrantup.com.
+
+  # Every Vagrant development environment requires a box. You can search for
+  # boxes at https://atlas.hashicorp.com/search.
+  config.vm.box = "centos/7"
+
+  if Vagrant.has_plugin?("vagrant-cachier")
+    config.cache.scope = :box
+  end
+
+  (0..2).each do |i|
+    config.vm.define "node#{i}" do |node|
+      node.vm.hostname = "node#{i}"
+      node.vm.network "private_network", ip: "10.0.40.1#{i}"
+      # Configure networking for advanced topics
+      #node.vm.network "public_network", bridge: "en3: Thunderbolt Ethernet"
+      #node.vm.network "public_network", bridge: "en0: Wi-Fi (AirPort)"
+      #node.vm.network "public_network", bridge: "en5: Display Ethernet"
+
+      node.vm.provider :virtualbox do |vb|
+          #vb.customize ["modifyvm", :id, "--nicpromisc3", "allow-all"]
+          vb.customize ["modifyvm", :id, "--memory", "2024"]
+          vb.customize ["modifyvm", :id, "--cpus", "1"]
+      end
+      node.vm.provision "shell", path: "bootstrap.sh"
+    end
+  end
+
+
+end
